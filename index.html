@@ -25,6 +25,7 @@ body{
     <div id="hello"></div>
     <div id="timer"></div>
     <div id="menu"></div>
+    <div id="search"></div>
     <script src="shared/thirdparty/es5-shim.min.js"></script>
     <script src="shared/thirdparty/es5-sham.min.js"></script>
     <script src="shared/thirdparty/console-polyfill.js"></script>
@@ -128,6 +129,45 @@ body{
     });
 
     React.render(<Menu options={['home', 'test1', 'test2']} />, document.getElementById('menu'));
+
+    var Search = React.createClass({
+
+        getInitialState: function () {
+            return {
+                //items: []
+            };
+        },
+
+        handleChange: function (e) {
+        },
+
+        render: function () {
+            var t = this;
+
+            return (<div>
+                <input type="search" placeholder="Search" onChange={t.handleChange} />
+                <ul>
+                    {t.props.items.map(function (item, index) {
+                        return <li>{item.name} : {item.url}</li>
+                    })}
+                </ul>
+            </div>);
+        }
+    });
+
+    var items = [
+        {url: 'www', name:'pavan1'},
+        {url: 'www1', name:'pavan2'},
+        {url: 'www2', name:'pavan3'},
+        {url: 'www3', name:'pavan4'},
+        {url: 'www4', name:'pavan5'},
+        {url: 'www5', name:'pavan6'},
+        {url: 'www6', name:'pavan7'},
+        {url: 'www7', name:'pavan8'},
+        {url: 'www8', name:'pavan9'},
+        {url: 'www9', name:'pavan0'}
+    ];
+    React.render(<Search items={items} />, document.getElementById('search'))
 
     </script>
 </body>
