@@ -1,0 +1,133 @@
+<html>
+<head>
+<style>
+* {
+    padding:0;
+    margin:0;
+}
+
+html{
+    font:14px normal Arial, sans-serif;
+    color:#626771;
+}
+
+body{
+    padding:60px;
+    text-align: center;
+}
+
+.focused{
+    background-color: green;
+}
+</style>
+</head>
+<body>
+    <div id="hello"></div>
+    <div id="timer"></div>
+    <div id="menu"></div>
+    <script src="shared/thirdparty/es5-shim.min.js"></script>
+    <script src="shared/thirdparty/es5-sham.min.js"></script>
+    <script src="shared/thirdparty/console-polyfill.js"></script>
+    <script src="http://fb.me/react-0.12.0.js"></script>
+    <script src="build/JSXTransformer.js"></script>
+    <script type="text/jsx">
+
+    var FancyButton = React.createClass({
+        render: function () {
+            return <button onClick={this.props.onClick}>{this.props.text}</button>
+        }
+    });
+
+    var HelloWorld = React.createClass({
+        getInitialState: function() {
+            return {
+                counter: 0
+            }
+        },
+
+        increment: function () {
+            this.setState({counter: this.state.counter + 1})
+        },
+
+        render: function () {
+            return <div>
+                <div>Hello {this.props.name}</div>
+                <div>Clicks {this.state.counter}</div>
+                <FancyButton text="Increment" onClick={this.increment} />
+                <button onClick={this.increment}>Click</button>
+            </div>
+        }
+    });
+    React.render(new HelloWorld({name: 'Pavan Ratnakar'}), document.getElementById('hello'));
+
+    var Timer = React.createClass({
+        getInitialState: function () {
+            return {
+                elapsed: 0
+            }
+        },
+
+        componentDidMount: function () {
+            this.timer = setInterval(this.tick, 10);
+        },
+
+        compoentWillUnmount: function () {
+            clearInterval(this.timer);
+        },
+
+        tick: function () {
+            this.setState({
+                elapsed: new Date() - this.props.start
+            });
+        },
+
+        render: function () {
+            return <div>Time is {this.state.elapsed}</div>
+        }
+    });
+
+    React.render(<Timer start={Date.now()} />, document.getElementById('timer'));
+
+
+    var Menu = React.createClass({
+
+        getInitialState: function () {
+            return {
+                focused: 0
+            };
+        },
+
+        componentDidMount: function () {
+
+        },
+
+        compoentWillUnmount: function () {
+
+        },
+
+        click: function (e) {
+            this.setState({
+                focused: e.target.getAttribute('data-index')
+            });
+        },
+
+        render: function () {
+            var t = this;
+
+            return (
+            <div>
+                <ul>
+                    {this.props.options.map(function (p, index) {
+                        return <li data-index={index} className={parseInt(t.state.focused, 10) === index ? 'focused' : ''} onClick={t.click}>{p}</li>
+                    })}
+                </ul>
+            </div>
+            )
+        }
+
+    });
+
+    React.render(<Menu options={['home', 'test1', 'test2']} />, document.getElementById('menu'));
+
+    </script>
+</body>
