@@ -26,6 +26,7 @@ body{
     <div id="timer"></div>
     <div id="menu"></div>
     <div id="search"></div>
+    <div id="service"></div>
     <script src="shared/thirdparty/es5-shim.min.js"></script>
     <script src="shared/thirdparty/es5-sham.min.js"></script>
     <script src="shared/thirdparty/console-polyfill.js"></script>
@@ -134,40 +135,111 @@ body{
 
         getInitialState: function () {
             return {
-                //items: []
+                searchString: ''
             };
         },
 
-        handleChange: function (e) {
+        onChange: function (e) {
+            this.setState({
+                searchString: e.target.value
+            });
         },
 
         render: function () {
-            var t = this;
+            var t = this,
+                items = t.props.items,
+                searchString = t.state.searchString.trim().toLowerCase();
+
+            items = items.filter(function (item) {
+                return item.name.match(searchString);
+            });
 
             return (<div>
-                <input type="search" placeholder="Search" onChange={t.handleChange} />
-                <ul>
-                    {t.props.items.map(function (item, index) {
-                        return <li>{item.name} : {item.url}</li>
-                    })}
-                </ul>
+            <input type="search" placeholder="Search" onChange={this.onChange} />
+            <ul>
+                {items.map(function (item, index) {
+                    return <li>
+                        <a target="_blank" href={item.url}>{item.name}</a>
+                    </li>
+                })}
+            </ul>
             </div>);
         }
     });
 
     var items = [
-        {url: 'www', name:'pavan1'},
-        {url: 'www1', name:'pavan2'},
-        {url: 'www2', name:'pavan3'},
-        {url: 'www3', name:'pavan4'},
-        {url: 'www4', name:'pavan5'},
-        {url: 'www5', name:'pavan6'},
-        {url: 'www6', name:'pavan7'},
-        {url: 'www7', name:'pavan8'},
-        {url: 'www8', name:'pavan9'},
-        {url: 'www9', name:'pavan0'}
+        {key:1, url: 'http://www.pavanratnakar.com', name:'pavan1'},
+        {key:2, url: 'http://www.pavanratnakar.com', name:'pavan2'},
+        {key:3, url: 'http://www.pavanratnakar.com', name:'pavan3'},
+        {key:4, url: 'http://www.pavanratnakar.com', name:'pavan4'},
+        {key:5, url: 'http://www.pavanratnakar.com', name:'pavan5'}
     ];
-    React.render(<Search items={items} />, document.getElementById('search'))
+    React.render(<Search items={items} />, document.getElementById('search'));
+
+    var Service = React.createClass({
+
+        getInitialState: function () {
+            return {
+                active: false
+            };
+        },
+
+        clickHandler: function (e) {
+            this.setState({
+                active: !this.state.active
+            });
+            this.props.addTotal(this.state.active ? -this.props.price : this.props.price);
+        },
+
+        render: function () {
+            return <li onClick={this.clickHandler}><div>{this.props.name} <strong>{this.props.price}</strong></div></li>
+        }
+
+    });
+
+    var ServiceChooser = React.createClass({
+
+        getInitialState: function () {
+            return {
+                total: 0
+            };
+        },
+
+        addTotal: function (value) {
+            this.setState({
+                total: this.state.total + value
+            });
+        },
+
+        render: function () {
+            var t = this,
+                services = '';
+
+            services = this.props.items.map(function (item, index) {
+                return <Service name={item.name} price={item.price} active={item.active} addTotal={t.addTotal} />
+            });
+
+            return (
+                <div>
+                    <h3>Service</h3>
+                    <ul>
+                        {services}
+                    </ul>
+                    <div>{this.state.total}</div>
+                </div>
+            );
+        }
+
+    });
+
+    var services = [
+        {name: 'Book1', price: 100},
+        {name: 'Book2', price: 200},
+        {name: 'Book3', price: 300},
+        {name: 'Book4', price: 150}
+    ];
+
+    React.render(<ServiceChooser items={services} />, document.getElementById('service'))
 
     </script>
 </body>
