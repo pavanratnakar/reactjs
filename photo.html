@@ -216,7 +216,7 @@
                     favorites;
 
                 pictures = t.state.pictures.map(function (picture, index) {
-                    return <Photo pid={picture.id} src={picture.src} url={picture.url} title={picture.title} favorite={picture.favorite} onClick={t.pictureClick} height={100} type={picture.type} />;
+                    return <Photo key={picture.id} pid={picture.id} src={picture.src} url={picture.url} title={picture.title} favorite={picture.favorite} onClick={t.pictureClick} height={100} type={picture.type} />;
                 });
 
                 if (!pictures.length) {
@@ -224,7 +224,7 @@
                 }
 
                 flickrPictures = t.state.flickrPictures.map(function (picture, index) {
-                    return <Photo pid={picture.id} src={picture.src} url={picture.url} title={picture.title} favorite={picture.favorite} onClick={t.pictureClick} height={100} type={picture.type} />;
+                    return <Photo key={picture.id} pid={picture.id} src={picture.src} url={picture.url} title={picture.title} favorite={picture.favorite} onClick={t.pictureClick} height={100} type={picture.type} />;
                 });
 
                 if (!flickrPictures.length) {
@@ -232,7 +232,7 @@
                 }
 
                 favorites = t.state.favorites.map(function (picture, index) {
-                    return <Photo pid={picture.id} src={picture.src} url={picture.url} title={picture.title} onClick={t.favoriteClick} favorite={true} height={200} type={picture.type} />;
+                    return <Photo key={picture.id} pid={picture.id} src={picture.src} url={picture.url} title={picture.title} onClick={t.favoriteClick} favorite={true} height={200} type={picture.type} />;
                 });
 
                 if (!favorites.length) {
